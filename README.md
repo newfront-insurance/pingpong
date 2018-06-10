@@ -10,7 +10,7 @@ Sample Usage
 ### Build image
 
 ```bash
-$ docker build -t tsongpon/pingpong .
+$ docker build -t tsongpon/pingpong .   
 ```
 
 ### Starting a web server on port 80
