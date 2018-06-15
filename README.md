@@ -1,4 +1,4 @@
-Pingping
+Pingpong
 ===========
 
 This is a simple image that just gives a response on port 8080. Use this to
