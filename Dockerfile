@@ -1,6 +1,5 @@
-FROM golang:1.16-alpine3.15
+FROM golang:1.10-alpine3.7
 
-# Install required packages
 RUN apk add --no-cache \
     curl \
     git \
@@ -9,9 +8,7 @@ RUN apk add --no-cache \
     tcpdump \
     iputils \
     iproute2 \
-    socat \
-    hping3
-
+    socat
 
 ADD . /go/src/github.com/tsongpon/pingpong
 RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
