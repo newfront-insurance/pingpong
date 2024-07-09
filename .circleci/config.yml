@@ -42,11 +42,11 @@ jobs:
       - run:
           name: Tag ping-pong Docker image
           command: |
-            docker tag newfront/ping-pong:latest newfront/ping-pong:1
+            docker tag newfront/ping-pong:latest newfront/ping-pong:<< pipeline.number >>
       - run:
           name: Push ping-pong Docker image
           command: |
-            docker push newfront/ping-pong:1
+            docker push newfront/ping-pong:<< pipeline.number >>
             docker push newfront/ping-pong:latest
 
 
