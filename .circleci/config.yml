@@ -42,11 +42,11 @@ jobs:
       - run:
           name: Tag ping-pong Docker image
           command: |
-            docker tag newfront/ping-pong:latest newfront/ping-pong:${CIRCLE_TAG}
+            docker tag newfront/ping-pong:latest newfront/ping-pong:${CIRCLE_PIPELINE_NUMBER}
       - run:
           name: Push ping-pong Docker image
           command: |
-            docker push newfront/ping-pong:${CIRCLE_TAG}
+            docker push newfront/ping-pong:${CIRCLE_PIPELINE_NUMBER}
             docker push newfront/ping-pong:latest
 
 
