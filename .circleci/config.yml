@@ -1,6 +1,10 @@
 version: 2.1
 setup: false
 
+aliases:
+  - &global-context
+    context: newfront-global
+
 filters: &always_run
   tags:
     only: /.*/
