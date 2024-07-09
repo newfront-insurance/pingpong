@@ -20,7 +20,7 @@ executors:
           PIPELINE_NUMBER: << pipeline.number >>
 
 jobs:
-  build_app_crafter_for_eks:
+  build_ping_pong_image:
     executor: eks-executor
     resource_class: large
     steps:
@@ -44,8 +44,8 @@ jobs:
 
 
 workflows:
-  app-crafter-dev-release:
+  build_ping_pong_image:
     jobs:
-      - build_app_crafter_for_eks:
+      - build_ping_pong_image:
           <<: *global-context
           filters: *always_run
