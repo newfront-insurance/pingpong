@@ -35,8 +35,8 @@ jobs:
       - run:
           name: Push app-crafter-eks Docker image
           command: |
-            docker push newfront/app-crafter-eks:${CIRCLE_TAG}
-            docker push newfront/app-crafter-eks:latest
+            docker push newfront/ping-pong:${CIRCLE_TAG}
+            docker push newfront/ping-pong:latest
 
 
 workflows:
