@@ -1,4 +1,4 @@
-FROM golang:1.10-alpine3.15
+FROM golang:1.16-alpine3.15
 
 # Install required packages
 RUN apk add --no-cache \
