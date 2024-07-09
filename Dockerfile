@@ -8,7 +8,7 @@ RUN apk add --no-cache \
     tcpdump \
     iputils \
     iproute2 \
-    socat
+    socat \
 
 ADD . /go/src/github.com/tsongpon/pingpong
 RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh

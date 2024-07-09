@@ -36,15 +36,15 @@ jobs:
       - setup_remote_docker
       - docker-login
       - run:
-          name: Build app-crafter-eks docker image
+          name: Build ping-pong docker image
           command: |
             docker build -t newfront/ping-pong:latest .
       - run:
-          name: Tag app-crafter-eks Docker image
+          name: Tag ping-pong Docker image
           command: |
-            docker tag newfront/ping-pong:latest newfront/app-crafter-eks:${CIRCLE_TAG}
+            docker tag newfront/ping-pong:latest newfront/ping-pong:${CIRCLE_TAG}
       - run:
-          name: Push app-crafter-eks Docker image
+          name: Push ping-pong Docker image
           command: |
             docker push newfront/ping-pong:${CIRCLE_TAG}
             docker push newfront/ping-pong:latest
