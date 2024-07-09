@@ -19,6 +19,14 @@ executors:
         environment:
           PIPELINE_NUMBER: << pipeline.number >>
 
+
+commands:
+  docker-login:
+    description: Docker setup and login
+    steps:
+      - run: echo "${DOCKERHUB_PASSWORD}" | docker login --username "${DOCKERHUB_USERNAME}" --password-stdin
+
+
 jobs:
   build_ping_pong_image:
     executor: eks-executor
