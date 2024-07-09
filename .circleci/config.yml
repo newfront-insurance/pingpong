@@ -1,0 +1,47 @@
+version: 2.1
+setup: false
+
+filters: &always_run
+  tags:
+    only: /.*/
+
+executors:
+  eks-executor:
+    docker:
+      - image: newfront/app-crafter-eks:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          PIPELINE_NUMBER: << pipeline.number >>
+
+jobs:
+  build_app_crafter_for_eks:
+    executor: eks-executor
+    resource_class: large
+    steps:
+      - checkout
+      - setup_remote_docker
+      - docker-login
+      - run:
+          name: Build app-crafter-eks docker image
+          command: |
+            cd src/executors/docker
+            docker build -t newfront/ping-pong:latest .
+      - run:
+          name: Tag app-crafter-eks Docker image
+          command: |
+            docker tag newfront/ping-pong:latest newfront/app-crafter-eks:${CIRCLE_TAG}
+      - run:
+          name: Push app-crafter-eks Docker image
+          command: |
+            docker push newfront/app-crafter-eks:${CIRCLE_TAG}
+            docker push newfront/app-crafter-eks:latest
+
+
+workflows:
+  app-crafter-dev-release:
+    jobs:
+      - build_app_crafter_for_eks:
+          <<: *global-context
+          filters: *always_run
