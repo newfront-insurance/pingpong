@@ -1,0 +1,52 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kitchen-sink-alb
+  namespace: newfront
+  annotations:
+    alb.ingress.kubernetes.io/actions.rules: >
+      {"type":"forward","forwardConfig":{"targetGroups":[{"serviceName":"kitchen-sink","servicePort":"3000","weight":100}],"targetGroupStickinessConfig":{"enabled":false}}}
+    alb.ingress.kubernetes.io/conditions.rules: >
+      [{"field":"host-header","hostHeaderConfig":{"values":["kitchen-sink.newfront-development.com","dev-kitchen-sink.newfront-development.com","dev-eks-kitchen-sink.newfront-development.com"]}}]
+    alb.ingress.kubernetes.io/actions.rules2: >
+      {"type":"forward","forwardConfig":{"targetGroups":[{"serviceName":"kitchen-sink","servicePort":"3000","weight":100}],"targetGroupStickinessConfig":{"enabled":false}}}
+    alb.ingress.kubernetes.io/conditions.rules2: >
+      [{"field":"host-header","hostHeaderConfig":{"values":["kitchen-sink.newfront-staging.com","dev-eks-kitchen-sink.newfront-staging.com"]}}]
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/target-type: ip
+    external-dns.alpha.kubernetes.io/exclude: 'false'
+    alb.ingress.kubernetes.io/success-codes: "200"
+    alb.ingress.kubernetes.io/healthcheck-path: "/api/version"
+    alb.ingress.kubernetes.io/healthcheck-port: "3000"
+    external-dns.alpha.kubernetes.io/hostname: eks-dev-kitchen-sink.newfront-development.com,eks-dev-kitchen-sink.newfront-staging.com
+
+spec:
+  # This ingress class will cause a LB with allowed host header = dash.newfront-staging.com and an A record to be created dev-eks-dash.newfront-staging.com
+  ingressClassName: alb
+  tls:
+    - hosts:
+        - www.newfront-development.com
+        - www.newfront-staging.com
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rules
+                port:
+                  name: use-annotation
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rules2
+                port:
+                  name: use-annotation

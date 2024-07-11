@@ -88,17 +88,7 @@ spec:
       http:
         paths:
           - path: /ping
-            pathType: Exact
-            backend:
-              service:
-                name: pingpong
-                port:
-                  number: 80
-    - host: kong.dev.internal
-      http:
-        paths:
-          - path: /wait
-            pathType: Exact
+            pathType: Prefix
             backend:
               service:
                 name: pingpong

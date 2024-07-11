@@ -29,6 +29,24 @@ func main() {
 		fmt.Fprintf(w, "Waited for 10 seconds")
 	})
 
+	// New endpoint that waits for 10 seconds and then returns a 504
+	mux.HandleFunc("/ping/wait/timeout", func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(10 * time.Second)
+		http.Error(w, "Gateway Timeout", http.StatusGatewayTimeout)
+	})
+
+	// Endpoint that waits for 10 seconds and then returns a 502
+	mux.HandleFunc("/ping/wait/badgateway", func(w http.ResponseWriter, r *http.Request) {
+		time.Sleep(10 * time.Second)
+		http.Error(w, "Bad Gateway", http.StatusBadGateway)
+	})
+
+	// Endpoint to simulate connection refused
+	mux.HandleFunc("/ping/wait/refuse", func(w http.ResponseWriter, r *http.Request) {
+		conn, _, _ := w.(http.Hijacker).Hijack()
+		conn.Close()
+	})
+
 	server := &http.Server{
 		Addr:         ":8080",
 		Handler:      mux,
