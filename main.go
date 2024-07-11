@@ -39,6 +39,18 @@ func main() {
 		fmt.Fprintf(w, "Waited for 10 seconds")
 	})
 
+	mux.HandleFunc("/ping/wait/shorter", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Received /ping/wait/short request")
+		time.Sleep(5 * time.Second)
+		fmt.Fprintf(w, "Waited for 10 seconds")
+	})
+
+	mux.HandleFunc("/ping/wait/shortest", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Received /ping/wait/short request")
+		time.Sleep(2 * time.Second)
+		fmt.Fprintf(w, "Waited for 10 seconds")
+	})
+
 	// New endpoint that waits for 10 seconds and then returns a 504
 	mux.HandleFunc("/ping/wait/timeout", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Received /ping/wait/timeout request")
