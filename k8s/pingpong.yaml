@@ -17,8 +17,10 @@ spec:
         app: pingpong
         app.kubernetes.io/name: pingpong
         eks-cluster-name: nf-dev-eks-cluster
-        newfront.com/fargate: 'true'
+        newfront.com/fargate: 'false'
     spec:
+      nodeSelector:
+        newfront.com/layer: backend
       containers:
         - name: pingpong
           image: newfront/ping-pong:latest
@@ -78,6 +80,7 @@ metadata:
   namespace: newfront
   annotations:
     external-dns.alpha.kubernetes.io/exclude: 'true'
+    konghq.com/override: pingpong-kong
 spec:
   ingressClassName: kong
   rules:
@@ -91,3 +94,14 @@ spec:
                 name: pingpong
                 port:
                   number: 80
+    - host: kong.dev.internal
+      http:
+        paths:
+          - path: /wait
+            pathType: Exact
+            backend:
+              service:
+                name: pingpong
+                port:
+                  number: 80
+
